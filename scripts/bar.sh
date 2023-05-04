@@ -74,7 +74,7 @@ clock() {
 }
 
 get_weather() {
-    apikey="e1d16ca27dcabfa8898bf5b9368bcd79"
+    apikey=$(cat ~/.config/arco-chadwm/scripts/openweather-api-key)
     lat="43.2102"
     lon="27.9172"
     days=3 #How many days in the future do we want a forecast for min:1 max:5
