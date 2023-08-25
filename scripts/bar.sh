@@ -70,14 +70,19 @@ wlan() {
 
 clock() {
     # printf "^c$black^ ^b$darkblue^ "
-    printf "^c$black^^b$blue^$(date '+%a %d/%m/%y %H:%M') "
+    printf "^c$black^^b$blue^$(date '+%a %d/%m/%y %H:%M:%S') "
 }
 
 get_weather() {
     apikey=$(cat ~/.config/arco-chadwm/scripts/openweather-api-key)
-    lat="43.2102"
-    lon="27.9172"
-    days=3 #How many days in the future do we want a forecast for min:1 max:5
+	#VARNA
+    #lat="43.2102"
+    #lon="27.9172"
+	#SHUMEN
+	lat="43.2715"
+	lon="26.9250"
+
+    days=2 #How many days in the future do we want a forecast for min:1 max:5
 
     url="http://api.openweathermap.org/data/2.5/forecast?lat=$lat&lon=$lon&appid=$apikey&units=metric"
 
@@ -85,8 +90,9 @@ get_weather() {
     timestamps=($(cat forecast.json | jq '.list[] | .dt'))
     temps=($(cat forecast.json | jq '.list[] | .main | .temp'))
     icons=($(cat forecast.json | jq '.list[] | .weather[0] | .icon'))
+	city=($(cat forecast.json | jq '.city | .name'))
 
-    printf "^c$blue^^b$black^|"
+    printf "$city^c$blue^^b$black^|"
     lenght=${#temps[@]}
     dayCount=0
     for ((i = 0; i < $lenght; i++)); do
