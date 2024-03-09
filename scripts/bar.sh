@@ -18,11 +18,14 @@ interval=0
 # }
 
 cpu() {
-    usage=$(ps -A -o pcpu | tail -n+2 | paste -sd+ | bc | cut -d "." -f 1 | cut -d "," -f 1)
-    cores=$(nproc --all)
-    percentage=$(expr $usage / $cores)
+    # usage=$(ps -A -o pcpu | tail -n+2 | paste -sd+ | bc | cut -d "." -f 1 | cut -d "," -f 1)
+    # cores=$(nproc --all)
+    # percentage=$(expr $usage / $cores)
 
-    printf "^c$red^ ^b$black^ 󰻠 $(expr $usage / $cores)"
+    # printf "^c$red^ ^b$black^ 󰻠 $(expr $usage / $cores)"
+	result=$(awk '{u=$2+$4; t=$2+$4+$5; if (NR==1){u1=u; t1=t;} else print ($2+$4-u1) * 100 / (t-t1); }' <(grep 'cpu ' /proc/stat) <(sleep 1;grep 'cpu ' /proc/stat))
+
+    printf "^c$red^ ^b$black^ 󰻠 $result"
 }
 
 # pkg_updates() {
@@ -76,11 +79,11 @@ clock() {
 get_weather() {
     apikey=$(cat ~/.config/arco-chadwm/scripts/openweather-api-key)
 	#VARNA
-    #lat="43.2102"
-    #lon="27.9172"
+    lat="43.2102"
+    lon="27.9172"
 	#SHUMEN
-	lat="43.2715"
-	lon="26.9250"
+	#lat="43.2715"
+	#lon="26.9250"
 
     days=2 #How many days in the future do we want a forecast for min:1 max:5
 
@@ -190,11 +193,11 @@ get_weather() {
         # fi
 
         #We are getting the weather for 9AM, 3PM and 9PM for each day
-        if [ $DayHour == '09' ] || [ $DayHour == '12' ] || [ $DayHour == '15' ] || [ $DayHour == '18' ] || [ $DayHour == '21' ]; then
+        if [ $DayHour == '08' ] || [ $DayHour == '11' ] || [ $DayHour == '14' ] || [ $DayHour == '17' ] || [ $DayHour == '20' ]; then
             #This ${temps[$i]%%'.'*} is f*ckin magic. Converts a string for example "10.13" to "10"
             printf "^c$iconcolor^^b$black^$icon ^c$tempcolor^^b$black^${temps[$i]%%'.'*}°"
         fi
-        if [ $i == $(($lenght - 1)) ] || [ $DayHour == '21' ]; then
+        if [ $i == $(($lenght - 1)) ] || [ $DayHour == '20' ]; then
             printf "$DayOfWeek^c$blue^^b$black^|"
             dayCount=$(($dayCount + 1))
         fi
@@ -210,6 +213,6 @@ while true; do
     interval=$((interval + 1))
 
     #sleep 2 && xsetroot -name "$updates $(cpu) $(mem) $(wlan) $(clock)"
-    sleep 2 && xsetroot -name "$btc $forecast $(cpu) $(mem) $(hdd) $(clock)"
+    sleep 5 && xsetroot -name "$btc $forecast $(cpu) $(mem) $(hdd) $(clock)"
 
 done
