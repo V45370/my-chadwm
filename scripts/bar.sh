@@ -76,6 +76,20 @@ clock() {
     printf "^c$black^^b$blue^$(date '+%a %d/%m/%y %H:%M:%S') "
 }
 
+cpu_temp(){
+    for temp_dir in /sys/class/hwmon/*; do
+                [[ "$(< "${temp_dir}/name")" =~ (cpu_thermal|coretemp|fam15h_power|k10temp) ]] && {
+                    temp_dirs=("$temp_dir"/temp*_input)
+                    temp_dir=${temp_dirs[0]}
+                    break
+                }
+            done
+    [[ -f "$temp_dir" ]] && deg="$(($(< "$temp_dir") * 100 / 10000))"
+    deg="${deg//.}"
+    deg="[${deg/${deg: -1}}.${deg: -1}°${cpu_temp:-C}]"
+    printf "^c$red^ ^b$black^$deg"      
+}
+
 get_weather() {
     apikey=$(cat ~/.config/arco-chadwm/scripts/openweather-api-key)
 	#VARNA
@@ -215,6 +229,6 @@ while true; do
     interval=$((interval + 1))
 
     #sleep 2 && xsetroot -name "$updates $(cpu) $(mem) $(wlan) $(clock)"
-    sleep 5 && xsetroot -name "$btc $forecast $(cpu) $(mem) $(hdd) $(clock)"
+    sleep 5 && xsetroot -name "$btc $forecast $(cpu) $(cpu_temp) $(mem) $(hdd) $(clock)"
 
 done

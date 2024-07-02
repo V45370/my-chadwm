@@ -26,7 +26,7 @@ run "volumeicon"
 sxhkd -c ~/.config/arco-chadwm/sxhkd/sxhkdrc &
 #run "nitrogen --restore"
 #you can set wallpapers in themes as well
-feh --randomize --bg-fill /wallpapers/* &
+feh --randomize --bg-fill ~/wallpapers/* &
 
 
 #wallpaper for other Arch based systems
