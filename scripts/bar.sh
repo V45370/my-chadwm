@@ -194,12 +194,12 @@ get_weather() {
 
         #We are getting the weather for 9AM, 3PM and 9PM for each day
         # if [ $DayHour == '08' ] || [ $DayHour == '11' ] || [ $DayHour == '14' ] || [ $DayHour == '17' ] || [ $DayHour == '20' ]; then
-        if [ $DayHour == '09' ] || [ $DayHour == '12' ] || [ $DayHour == '15' ] || [ $DayHour == '18' ] || [ $DayHour == '21' ]; then
+         if [ $DayHour == '09' ] || [ $DayHour == '12' ] || [ $DayHour == '15' ] || [ $DayHour == '18' ] || [ $DayHour == '21' ]; then
             #This ${temps[$i]%%'.'*} is f*ckin magic. Converts a string for example "10.13" to "10"
             printf "^c$iconcolor^^b$black^$icon ^c$tempcolor^^b$black^${temps[$i]%%'.'*}°"
         fi
         # if [ $i == $(($lenght - 1)) ] || [ $DayHour == '20' ]; then
-        if [ $i == $(($lenght - 1)) ] || [ $DayHour == '21' ]; then
+         if [ $i == $(($lenght - 1)) ] || [ $DayHour == '21' ]; then
             printf "$DayOfWeek^c$blue^^b$black^|"
             dayCount=$(($dayCount + 1))
         fi
